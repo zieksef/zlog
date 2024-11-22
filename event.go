@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -47,6 +48,11 @@ func (e *Event) Bool(key string, val bool) *Event {
 
 func (e *Event) Str(key string, val string) *Event {
 	e.fields = append(e.fields, zap.String(key, val))
+	return e
+}
+
+func (e *Event) Time(key string, val time.Time) *Event {
+	e.fields = append(e.fields, zap.Time(key, val))
 	return e
 }
 
