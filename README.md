@@ -1,4 +1,4 @@
-# log
+# zlog
 
 ## 1. Overview
 A logging library designed to provide a chainable API for logging operations, built on top of the Uber [Zap](https://github.com/uber-go/zap) with [Zerolog (https://github.com/rs/zerolog)](https://github.com/rs/zerolog) style.
@@ -8,7 +8,7 @@ A logging library designed to provide a chainable API for logging operations, bu
 ## 2. Quick Start
 
 ```
-log.Info().Msg("an example")
+zlog.Info().Msg("an example")
 
 {"level":"INFO","ts":"2024-11-12T14:16:47.522+0800","caller":"cmd/main.go:20","msg":"an example"}
 ```
@@ -21,16 +21,16 @@ log.Info().Msg("an example")
 
 ```go
 // package level initialization with default option
-log.Init(log.DefaultOption())
-log.Info().Msg("an example")
+zlog.Init(zlog.DefaultOption())
+zlog.Info().Msg("an example")
 
 
 // object level initialization with default option
-logger := log.New(log.DefaultOption())
+logger := zlog.New(zlog.DefaultOption())
 
 
 // initialization with user defined option
-logger := log.New(log.Option{
+logger := zlog.New(zlogOption{
     Dir:            "logs",
     Filename:       "access.log",
     DisableConsole: false,
@@ -47,13 +47,13 @@ logger := log.New(log.Option{
 
 ```go
 // example of production envrionment initialization
-opt := log.DefaultOption().
+opt := zlog.DefaultOption().
         SetDir(config.Dir).
         SetFilename(config.LogFile).
         SetWriter(os.Stdout).
         SetDisableConsole(true)
 
-logger := log.New(opt)
+logger := zlogNew(opt)
 ```
 
 ### 3.3 Chainable Logging API
@@ -96,7 +96,7 @@ logger.Error().
 ### 3.4 Log Pre-defined Context
 
 ```go
-logger := log.New(log.DefaultOption())
+logger := zlog.New(zlog.DefaultOption())
 
 logger = logger.With("machine_id", 3).
     With("service", "gateway").
@@ -111,7 +111,7 @@ logger.Info().Str("trace_id", "1234").Str("card_number", "12345").Msg("update ca
 ### 3.5 Passed Standard Context
 
 ```go
-logger := log.New(log.DefaultOption())
+logger := zlog.New(zlog.DefaultOption())
 
 ctx := context.Background()
 ctx = context.WithValue(ctx, "trace_id", "t123")
@@ -135,7 +135,7 @@ logger.Info(ctx).Str("account_id", "1234").Str("card_number", "12345").Msg("upda
 ### 3.6 Passed Gin Context
 
 ```go
-logger := log.New(log.DefaultOption())
+logger := zlog.New(zlog.DefaultOption())
 
 ctx := &gin.Context{}
 ctx.Set("trace_id", "t123")
