@@ -53,7 +53,7 @@ opt := zlog.DefaultOption().
         SetWriter(os.Stdout).
         SetDisableConsole(true)
 
-logger := zlogNew(opt)
+logger := zlog.New(opt)
 ```
 
 ### 3.3 Chainable Logging API
