@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -27,6 +26,7 @@ type Option struct {
 	SkipLevel      int
 	Timezone       *time.Location
 	Writer         io.Writer
+	Pretty         bool
 }
 
 // DefaultOption with Asia/Shanghai timezone has no daily rotation and only enables console output.
@@ -87,11 +87,9 @@ func (o Option) SetDisableConsole(disable bool) Option {
 	return o
 }
 
-func newEncoder() zapcore.Encoder {
-	cfg := zap.NewProductionEncoderConfig()
-	cfg.EncodeTime = zapcore.ISO8601TimeEncoder
-	cfg.EncodeLevel = zapcore.CapitalLevelEncoder
-	return zapcore.NewJSONEncoder(cfg)
+func (o Option) SetPretty(pretty bool) Option {
+	o.Pretty = pretty
+	return o
 }
 
 func newWriter(opt Option) zapcore.WriteSyncer {
