@@ -78,7 +78,7 @@ func (l *Logger) newEvent(ctx context.Context, level zapcore.Level) *Event {
 
 func newLogger(opt Option) *zap.Logger {
 	writeSyncer := newWriter(opt)
-	encoder := newEncoder()
+	encoder := newEncoder(opt)
 
 	core := zapcore.NewCore(encoder, writeSyncer, zapcore.InfoLevel)
 
